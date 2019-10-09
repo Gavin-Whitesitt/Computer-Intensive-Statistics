@@ -23,3 +23,8 @@ DirichletMultinomialPMF = function(n, alpha_vector,x_vector) {
 #both were unsucessfull, not sure why
 #pmf = gamma(sum(alpha_vector)) * ((gamma(alpha_vector))^-1) * x_vector^(alphas -1)
 #pmf = (factorial(n) * gamma(sum(alpha_vector))/gamma(n+sum(alpha_vector)))* prod(gamma((unique_x_vectors[[i]]+alpha_vector)/(factorial(unique_x_vectors[[i]])*gamma(alpha_vector))))
+
+#unit test
+x_vector<- c(1,0,1)
+alpha_vector<- c(1,2,3)
+n=2

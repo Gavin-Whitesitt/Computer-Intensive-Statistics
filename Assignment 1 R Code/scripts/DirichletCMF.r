@@ -7,13 +7,16 @@ DirichletCMF = function(alpha_vector,n){
 #@function_body
   unique_x_vectors = GenerateUniqueXVectors(n, alpha_vector)
   cmf = c()
+  pmf_vector = c()
   for (i in 1:length(unique_x_vectors)) {
     pmf = DirichletMultinomialPMF(n, alpha_vector, unique_x_vectors[[i]])
-    cmf = append(cmf, sum(pmf))
+    pmf_vector = append(pmf_vector, pmf)
+    cmf = append(cmf, sum(pmf_vector))
   }
   
+  lookup_table = list("cmf" = cmf, "x_vector" = unique_x_vectors)
   
-  return(cmf)  
+  return(lookup_table)  
 }
 
 #End DirichletCMF.r
