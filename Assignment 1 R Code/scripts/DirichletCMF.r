@@ -1,9 +1,9 @@
 DirichletCMF = function(alpha_vector,n){
 #@description
-#Simulates exponentials using the inverse CDF function
+#Generates the cmf for a Multinomial Dirchlet distribution for a given alpha vector and n
 #@
 #@parameters
-#n: scalar, sample_size: numeric, lambda: scalar
+#n: number, alpha_vector: vector of probabilities
 #@function_body
   unique_x_vectors = GenerateUniqueXVectors(n, alpha_vector)
   cmf = c()

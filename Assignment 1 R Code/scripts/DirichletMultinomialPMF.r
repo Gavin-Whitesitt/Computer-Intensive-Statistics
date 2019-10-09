@@ -3,8 +3,6 @@ DirichletMultinomialPMF = function(n, alpha_vector,x_vector) {
 #Evaluates the Dirichlet probability mass function for a given x_vector, alpha_vector and n
 #Uses Dirichlet-Multinomial pmf from wikipedia
 #assumes that x_i > 0{x_i > 0} and x_1 + ... + x_k = 1, and zero otherwise. 
-#
-#
 #@function_body
   
   #Broken down into form (A/B)*prod(C/D) for readability 
@@ -19,12 +17,7 @@ DirichletMultinomialPMF = function(n, alpha_vector,x_vector) {
 }
 #END DirichletMultinomialPMF.r
 
-#@Gavin's first two attempts at implementing directly from the density equation on wikipedia for documentation 
+#@Gavin's first two attempts at implementing directly from the density equation on wikipedia: for documentation 
 #both were unsucessfull, not sure why
 #pmf = gamma(sum(alpha_vector)) * ((gamma(alpha_vector))^-1) * x_vector^(alphas -1)
 #pmf = (factorial(n) * gamma(sum(alpha_vector))/gamma(n+sum(alpha_vector)))* prod(gamma((unique_x_vectors[[i]]+alpha_vector)/(factorial(unique_x_vectors[[i]])*gamma(alpha_vector))))
-
-#unit test
-x_vector<- c(1,0,1)
-alpha_vector<- c(1,2,3)
-n=2
