@@ -73,7 +73,7 @@ for (i in pi_vector){
 #Problem 2 b) ------------------------------------------------------------------------
 #simulating a dataset with given probabilities
 data <- matrix(NA,ncol = 2, nrow = n)
-#mvrnorm(n = 1, as.vector(mu_matrix[,component_to_sample_from]),sigma_matrix[[component_to_sample_from]])
+
 for (i in 1:n){
   u <- runif(1,0,1)
   component_to_sample_from = min(which(pi_vector_cmf >= u))
@@ -112,7 +112,7 @@ for (i in 1:4){
   components$covariance[[i]] = current_covariance_matrix[[i]]
 }
 
-n_epochs = 1000
+n_epochs = 100
 
 for (i in 1:n_epochs){
   components = Expectation(data, components)
@@ -157,7 +157,107 @@ for (i in 1:B){
     print(i)
   }
   
-  bootsamples[[i]] <- list(components)
+  bootsamples[[B]] <- components
   
 }
+
+
+
+cov_1 <- c()
+cov_2 <- c()
+cov_3 <- c()
+cov_4 <- c()
+
+cov_1_1_vector <- c()
+cov_1_2_vector <- c()
+cov_1_3_vector <- c()
+
+cov_2_1_vector <- c()
+cov_2_2_vector <- c()
+cov_2_3_vector <- c()
+
+cov_3_1_vector <- c()
+cov_3_2_vector <- c()
+cov_3_3_vector <- c()
+
+cov_4_1_vector <- c()
+cov_4_2_vector <- c()
+cov_4_3_vector <- c()
+
+mu_1 <- c()
+mu_2 <- c()
+mu_3 <- c()
+mu_4 <- c()
+
+mu_1_1_vector <- c()
+mu_1_2_vector <-c()
+mu_2_1_vector <-c()
+mu_2_2_vector <-c()
+mu_3_1_vector <-c()
+mu_3_2_vector <-c()
+mu_4_1_vector <-c()
+mu_4_2_vector <-c()
+
+pi_1_vector <-c()
+pi_2_vector <-c()
+pi_3_vector <-c()
+pi_4_vector <- c()
+
+for (i in 1:B){
+  current_bootsample <- bootsamples[[B]]
+  
+  cov_1 <- current_bootsample$covariance[[1]]
+  cov_2 <- current_bootsample$covariance[[2]]
+  cov_3 <- current_bootsample$covariance[[3]]
+  cov_4 <- current_bootsample$covariance[[4]]
+  
+  cov_1_1_vector <- c(cov_1_1_vector ,cov_1[1,1])
+  cov_1_2_vector <- c(cov_1_2_vector ,cov_1[1,2])
+  cov_1_3_vector <- c(cov_1_3_vector, cov_1[2,2])
+  
+  cov_2_1_vector <- c(cov_2_1_vector ,cov_1[1,1])
+  cov_2_2_vector <- c(cov_2_2_vector ,cov_1[1,2])
+  cov_2_3_vector <- c(cov_2_3_vector ,cov_1[2,2])
+  
+  cov_3_1_vector <- c(cov_3_1_vector ,cov_1[1,1])
+  cov_3_2_vector <- c(cov_3_2_vector ,cov_1[1,2])
+  cov_3_3_vector <- c(cov_3_3_vector ,cov_1[2,2])
+  
+  cov_4_1_vector <- c(cov_4_1_vector ,cov_1[1,1])
+  cov_4_2_vector <- c(cov_4_2_vector ,cov_1[1,2])
+  cov_4_3_vector <- c(cov_4_3_vector ,cov_1[2,2])
+  
+  mu_1 <- current_bootsample$mu[[1]]
+  mu_2 <- current_bootsample$mu[[2]]
+  mu_3 <- current_bootsample$mu[[3]]
+  mu_4 <- current_bootsample$mu[[4]]
+  
+  mu_1_1_vector <- c(mu_1_1_vector, mu_1[1,1])
+  mu_1_2_vector <- c(mu_1_1_vector, mu_1[2,1])
+  mu_2_1_vector <- c(mu_1_1_vector, mu_2[1,1])
+  mu_2_2_vector <- c(mu_1_1_vector, mu_2[2,1])
+  mu_3_1_vector <- c(mu_1_1_vector, mu_3[1,1])
+  mu_3_2_vector <- c(mu_1_1_vector, mu_3[2,1])
+  mu_4_1_vector <- c(mu_1_1_vector, mu_4[1,1])
+  mu_4_2_vector <- c(mu_1_1_vector, mu_4[2,1])
+    
+  pi <- current_bootsample$pi
+  
+  pi_1_vector <- c(pi_1_vector, pi[[1]])
+  pi_2_vector <- c(pi_1_vector, pi[[2]])
+  pi_3_vector <- c(pi_1_vector, pi[[3]])
+  pi_4_vector <- c(pi_1_vector, pi[[4]])
+    
+}
+
+alpha = .02
+estimate = mu_1_1_vector
+
+#works for any estimate: examples for mu_1_1_vector shown
+quantile(estimate, c(alpha, 1-alpha)) 
+
+
+estimate = mu_1_2_vector
+quantile(estimate, c(alpha, 1-alpha))
+
 #END main.r
