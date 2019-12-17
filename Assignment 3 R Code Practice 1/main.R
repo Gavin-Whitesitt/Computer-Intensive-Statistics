@@ -30,54 +30,98 @@ load(paste0(base_dir,"//Assignment3PracticeProblem.RData"))
 data = x
 t = 0
 X_t = 0
-N = 10000
-burn_in = 1000
+N = 1000
+burn_in = 100
 approximate_sample = list()
 k = 4
+accept = FALSE
+x_t_sigma = c()
+x_t_alpha = c()
+accept_sample_vector = c()
 #output parameters
 
 
 #----------
 #code_body
-sigma_current <- 2.474922 #Initial known stable values to prevent numerical instability
-alpha_current <- 5.214308 #Initial known stable values to prevent numerical instability
+sigma_current <- runif(1,0,10) #Randomly set sigma
+alpha_current <- runif(1,0,10) #Randomly set alpha
 alpha_vector <- rep(alpha_current/k,k)
 
-for (i in 0:burn_in){
+current_liklihood = LogLiklihoodGivenSigmaAndAlpha(data,sigma_current,alpha_current)
+if(current_liklihood == 0){
+  current_liklihood = .Machine$double.xmin
+}
+
+
+
+for (i in 0:N){
   sigma_proposal <- runif(1,0,10)
   alpha_proposal <- runif(1,0,10)
-  ratio = LogLiklihoodGivenSigmaAndAlpha(data,sigma_proposal,alpha_proposal)/LogLiklihoodGivenSigmaAndAlpha(data,sigma_current,alpha_current)
+  
+  proposal_liklihood = LogLiklihoodGivenSigmaAndAlpha(data,sigma_proposal,alpha_proposal)
+  
+  if(proposal_liklihood == 0 |is.nan(proposal_liklihood)){
+    proposal_liklihood = .Machine$double.xmin
+  }
+  
+  
+  ratio = proposal_liklihood/current_liklihood
   if( ratio >= 1) {
      accept = TRUE
      sigma_current = sigma_proposal
-     alpha_curent = alpha_proposal 
+     alpha_current = alpha_proposal 
   } else{
-    runif(1,1,0)
-    if(runif <= ratio){
+    uniform = runif(1,0,1)
+    if(uniform <= ratio){
       sigma_current = sigma_proposal
-      alpha_curent = alpha_proposal 
+      alpha_current = alpha_proposal 
       accept = TRUE
     }
   }
   
-  if (accept =TRUE){
-    x_t = Target(sigma_current,alpha_curent)
-    append(approximate_sample, x_t)
-  }
-
+  accept_sample_vector = append(accept_sample_vector, accept)
   accept = FALSE
- }
+  x_t_sigma = append(x_t_sigma, sigma_current)
+  x_t_alpha = append(x_t_alpha, alpha_current)
+  
+  current_liklihood = LogLiklihoodGivenSigmaAndAlpha(data,sigma_current,alpha_current)
+  print(i)
+}
+#a
+
+#median for sigma
+median(x_t_sigma)
+#median for alpha
+median(x_t_alpha)
+#confidence interval
+
+#for sigma
+quantile(x_t_sigma,.025)
+quantile(x_t_sigma,.975)
+#for alpha
+quantile(x_t_alpha,.025)
+quantile(x_t_alpha,.975)
+
+#c
+#Traceplots 
+
+#for sigma
+plot(0:N,x_t_sigma)
 
 
-for (i in burn_in:N)
+#for alpha
+plot(0:N,x_t_alpha)
 
-sigma_current
-sigma_prior = 1/10
-alpha_prior = 1/10
-joint_prior = sigma_prior * alpha_prior
-transition_model = 
+#In both examples caterpillers are not looking healthy :( , Should probably use better priors
 
-View(x)
+#d
+#cumulative sample mean plot
+sigma_cumsum <- cumsum(x_t_sigma) / seq_along(x_t_sigma)
+alpha_cumsum <- cumsum(x_t_alpha) / seq_along(x_t_alpha)
+#for sigma
+plot(0:N,sigma_cumsum)
 
+#for alpha
+plot(0:N,alpha_cumsum)
 
 #END main.r
